@@ -98,7 +98,7 @@ public class ContentServiceImpl implements IContentService {
     }
 
     @Override
-    public PageInfo<ContentVo> getContents(Integer p, Integer limit) {
+    public PageInfo<ContentVo> getContents(Integer author_id, Integer p, Integer limit) {
         LOGGER.debug("Enter getContents method");
         ContentVoExample example = new ContentVoExample();
 
@@ -106,7 +106,7 @@ public class ContentServiceImpl implements IContentService {
         example.setOrderByClause("created desc");
 
 //        新建并且添加一个文章的类型，文章的状态
-        example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+        example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType()).andAuthorIdEqualTo(author_id);
 
 //        分页（Controller会传递参数过来）
         PageHelper.startPage(p, limit);

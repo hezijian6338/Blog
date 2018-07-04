@@ -48,6 +48,35 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public UserVo queryUserByUsername(String username) {
+//        根据用户的博客名称来查找该用户的具体信息⤴️
+
+//        创建新的用户接口
+        UserVoExample example = new UserVoExample();
+
+//        新建新的查询对象
+        UserVoExample.Criteria criteria = example.createCriteria();
+
+//        添加查询的SQL语句,下面的函数是根据用户的博客名称来获得具体数据（后期要控制用户的博客名字也要唯一）
+        criteria.andUsernameEqualTo(username);
+
+//        检查该用户的博客名字是否存在
+        long count = userDao.countByExample(example);
+        if (count < 1) {
+            throw new TipException("不存在该用户");
+        }
+
+//        检查该用户的博客名字是否有重复命名的
+        List<UserVo> userVos = userDao.selectByExample(example);
+        if (userVos.size() != 1) {
+            throw new TipException("用户名不唯一");
+        }
+
+//        返回列表中第一个数据,也是有且仅有的一个
+        return userVos.get(0);
+    }
+
+    @Override
     public UserVo login(String username, String password) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new TipException("用户名和密码不能为空");

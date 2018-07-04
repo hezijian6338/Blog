@@ -1,5 +1,6 @@
 package com.my.blog.website.controller;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.dto.ErrorCode;
@@ -11,10 +12,8 @@ import com.my.blog.website.model.Bo.RestResponseBo;
 import com.my.blog.website.model.Vo.CommentVo;
 import com.my.blog.website.model.Vo.ContentVo;
 import com.my.blog.website.model.Vo.MetaVo;
-import com.my.blog.website.service.ICommentService;
-import com.my.blog.website.service.IContentService;
-import com.my.blog.website.service.IMetaService;
-import com.my.blog.website.service.ISiteService;
+import com.my.blog.website.model.Vo.UserVo;
+import com.my.blog.website.service.*;
 import com.my.blog.website.utils.IPKit;
 import com.my.blog.website.utils.PatternKit;
 import com.my.blog.website.utils.TaleUtils;
@@ -53,14 +52,19 @@ public class IndexController extends BaseController {
     @Resource
     private ISiteService siteService;
 
+    @Resource
+    private IUserService userService;
+
     /**
      * 首页
      *
+     * 访问地址修改为un(username)/用户博客名字
+     *
      * @return
      */
-    @GetMapping(value = "/")
-    public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        return this.index(request, 1, limit);
+    @GetMapping(value = "un/{username}")
+    public String index(HttpServletRequest request, @PathVariable String username, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        return this.index(request, 1, limit, username);
     }
 
     /**
@@ -71,15 +75,18 @@ public class IndexController extends BaseController {
      * @param limit   每页大小
      * @return 主页
      */
-    @GetMapping(value = "page/{p}")
-    public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+    @GetMapping(value = "un/{author_id}/page/{p}")
+    public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit, @PathVariable String username) {
 //        @PathVariable 能够获取URL地址上用{}注明的参数值，传递到函数当中↑----@RequestParam 则是由前端页面带参数传递值过来获取的↑
 
 //        P为当前显示第几页参数;若P小于0,则显示1,若大于0,则显示P;若P大于页面设置最大页数,则显示1,若小于,则正常显示P.
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
 
+//        根据用户的博客名字来访问该用户的博客主页
+        UserVo user = userService.queryUserByUsername(username);
+
 //        发送参数给数据逻辑层（Service）进行处理,返回页面所需要的信息/对象（ContentVo）,也就是文章
-        PageInfo<ContentVo> articles = contentService.getContents(p, limit);
+        PageInfo<ContentVo> articles = contentService.getContents(user.getUid(), p, limit);
 
 //        通过request请求把Controller中的结果返回给前台页面进行显示（没想明白为啥不用Model进行传递，而要用传统的Req,Res）
         request.setAttribute("articles", articles);

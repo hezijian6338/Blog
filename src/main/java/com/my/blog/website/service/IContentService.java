@@ -23,11 +23,12 @@ public interface IContentService {
 
     /**
      *查询文章返回多条数据
+     * @param author_id 当前用户的id（用户根据用户显示博客内容）
      * @param p 当前页
      * @param limit 每页条数
      * @return ContentVo
      */
-    PageInfo<ContentVo> getContents(Integer p, Integer limit);
+    PageInfo<ContentVo> getContents(Integer author_id, Integer p, Integer limit);
 
 
     /**
