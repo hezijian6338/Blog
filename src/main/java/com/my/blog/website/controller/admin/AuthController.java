@@ -60,6 +60,7 @@ public class AuthController extends BaseController {
             if (StringUtils.isNotBlank(remeber_me)) {
                 TaleUtils.setCookie(response, user.getUid());
             }
+            //向日志页面登记该次登录
             logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), user.getUid());
         } catch (Exception e) {
             error_count = null == error_count ? 1 : error_count + 1;

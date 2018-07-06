@@ -53,8 +53,10 @@ public class IndexController extends BaseController {
     @GetMapping(value = {"","/index"})
     public String index(HttpServletRequest request){
         LOGGER.info("Enter admin index method");
+        //获取comment contents 需要根据当前用户获取
         List<CommentVo> comments = siteService.recentComments(5);
         List<ContentVo> contents = siteService.recentContents(5);
+        //获取statistics需要根据当前登录ID获取
         StatisticsBo statistics = siteService.getStatistics();
         // 取最新的20条日志
         List<LogVo> logs = logService.getLogs(1, 5);

@@ -161,9 +161,10 @@
   </insert>
   <select id="countByExample" parameterType="com.my.blog.website.model.Vo.AttachVoExample" resultType="java.lang.Long">
     select count(*) from t_attach
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+    where author_id = '1'
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update t_attach
