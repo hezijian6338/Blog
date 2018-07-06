@@ -67,6 +67,11 @@ public class IndexController extends BaseController {
         return this.index(request, 1, limit, username);
     }
 
+    @GetMapping(value = "/")
+    public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        return this.index(request, 1, limit, "0");
+    }
+
     /**
      * 首页分页
      *
@@ -75,18 +80,28 @@ public class IndexController extends BaseController {
      * @param limit   每页大小
      * @return 主页
      */
-    @GetMapping(value = "un/{author_id}/page/{p}")
+    @GetMapping(value = "/{username}/page/{p}")
     public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit, @PathVariable String username) {
 //        @PathVariable 能够获取URL地址上用{}注明的参数值，传递到函数当中↑----@RequestParam 则是由前端页面带参数传递值过来获取的↑
 
 //        P为当前显示第几页参数;若P小于0,则显示1,若大于0,则显示P;若P大于页面设置最大页数,则显示1,若小于,则正常显示P.
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
 
-//        根据用户的博客名字来访问该用户的博客主页
-        UserVo user = userService.queryUserByUsername(username);
+//        初始化用户的uid为0，则不根据作者查询文章
+        int uid = 0;
+
+        if(!username.equals("0")) {
+
+//            根据用户的博客名字来获取该用户的信息
+            UserVo user = userService.queryUserByUsername(username);
+
+//            根据返回的用户信息，取得该用户的id
+            uid = user.getUid();
+        }
+
 
 //        发送参数给数据逻辑层（Service）进行处理,返回页面所需要的信息/对象（ContentVo）,也就是文章
-        PageInfo<ContentVo> articles = contentService.getContents(user.getUid(), p, limit);
+        PageInfo<ContentVo> articles = contentService.getContents(uid, p, limit);
 
 //        通过request请求把Controller中的结果返回给前台页面进行显示（没想明白为啥不用Model进行传递，而要用传统的Req,Res）
         request.setAttribute("articles", articles);

@@ -105,8 +105,16 @@ public class ContentServiceImpl implements IContentService {
 //        设定最后显示文章的排序方式根据创建时间
         example.setOrderByClause("created desc");
 
-//        新建并且添加一个文章的类型，文章的状态
-        example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType()).andAuthorIdEqualTo(author_id);
+//        设定如果为0则是不根据文章归属者查找文章列表
+        if(author_id == 0) {
+
+//            新建并且添加一个文章的类型，文章的状态，但是不根据文章归属者查找
+            example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+        } else {
+
+//           新建并且添加一个文章的类型，文章的状态，具体根据文章作者查找
+            example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType()).andAuthorIdEqualTo(author_id);
+        }
 
 //        分页（Controller会传递参数过来）
         PageHelper.startPage(p, limit);
