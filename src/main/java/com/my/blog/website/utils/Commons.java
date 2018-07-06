@@ -150,6 +150,15 @@ public final class Commons {
         return permalink(contents.getCid(), contents.getSlug());
     }
 
+    /**
+     * 返回文章作者博客主界面
+     *
+     * @param username
+     * @return
+     */
+    public static String permalink(String username) {
+        return site_url("/un/" + username);
+    }
 
     /**
      * 获取随机数

@@ -140,7 +140,10 @@ public class IndexController extends BaseController {
             return this.render_404();
         }
 
+        UserVo user =  userService.queryUserById(contents.getAuthorId());
+
 //        返回获取的值给前端使用
+        request.setAttribute("author", user.getUsername());
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
 
