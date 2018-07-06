@@ -92,19 +92,15 @@
     <if test="distinct">
       distinct
     </if>
-
 --     查找不同的列
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-
 --     数据库文章表
     from t_contents
-
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-
 --     定制排列条件，排列顺序
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -117,9 +113,10 @@
     </if>
     <include refid="Base_Column_List" />
     from t_contents
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+     Where author_id = '1' AND type = 'post'
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>

@@ -93,9 +93,10 @@
     ,
     <include refid="Blob_Column_List" />
     from t_comments
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+     Where owner_id = '1'
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
