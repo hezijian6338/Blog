@@ -97,14 +97,19 @@ public class IndexController extends BaseController {
 
 //            根据返回的用户信息，取得该用户的id
             uid = user.getUid();
-        }
+        } else {
 
+//            如果是以公共的身份访问，即游客的身份访问，则设置该参数为true，前端不显示右上角三个私人按钮
+            request.setAttribute("public", true);
+        }
 
 //        发送参数给数据逻辑层（Service）进行处理,返回页面所需要的信息/对象（ContentVo）,也就是文章
         PageInfo<ContentVo> articles = contentService.getContents(uid, p, limit);
 
 //        通过request请求把Controller中的结果返回给前台页面进行显示（没想明白为啥不用Model进行传递，而要用传统的Req,Res）
         request.setAttribute("articles", articles);
+
+
 
 //        若显示第几页的参数P,不是显示第一页,则添加显示当前页
 //        这里的this.title其实也是通过Req传递到前端页面,只不过这里把通用型方法抽离出来,写在了BaseController这个父类当中,我们通过继承来实现方法,同时实现了代码的小量解耦

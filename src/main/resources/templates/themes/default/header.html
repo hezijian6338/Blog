@@ -32,7 +32,9 @@
         <a th:href="${commons.site_url()}" class="navbar-logo">
             <img th:src="@{/user/img/logo.png}" alt="首页"/>
         </a>
-        <div class="navbar-menu">
+
+        <!--添加了判断当前登陆的是否为公共浏览状态，若为true，则不显示这三个按钮，若是指定博客主登陆，则显示这三个按钮-->
+        <div class="navbar-menu" th:style="${public}? 'display:none' : 'display:'">
             <a th:href="${commons.site_url('/archives')}">归档</a>
             <a th:href="${commons.site_url('/links')}">友链</a>
             <a th:href="${commons.site_url('/about')}">关于</a>
