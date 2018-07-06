@@ -158,12 +158,14 @@ public class SiteServiceImpl implements ISiteService {
 
         ContentVoExample contentVoExample = new ContentVoExample();
         contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
-        Long articles =   contentDao.countByExample(contentVoExample);
-
+        //底层进行文章的计算
+        Long articles =  contentDao.countByExample(contentVoExample);
+        //底层进行文章评论的计算
         Long comments = commentDao.countByExample(new CommentVoExample());
-
+        //底层进行附件的计算
         Long attachs = attachDao.countByExample(new AttachVoExample());
 
+        //meta 友链无法确定使用方法
         MetaVoExample metaVoExample = new MetaVoExample();
         metaVoExample.createCriteria().andTypeEqualTo(Types.LINK.getType());
         Long links = metaDao.countByExample(metaVoExample);

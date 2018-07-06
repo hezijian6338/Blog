@@ -55,6 +55,7 @@ public class IndexController extends BaseController {
         LOGGER.info("Enter admin index method");
         List<CommentVo> comments = siteService.recentComments(5);
         List<ContentVo> contents = siteService.recentContents(5);
+        //获取statistics需要根据当前登录ID获取
         StatisticsBo statistics = siteService.getStatistics();
         // 取最新的20条日志
         List<LogVo> logs = logService.getLogs(1, 5);
