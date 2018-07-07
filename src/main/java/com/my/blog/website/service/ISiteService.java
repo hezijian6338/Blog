@@ -26,6 +26,14 @@ public interface ISiteService {
     List<CommentVo> recentComments(int limit);
 
     /**
+     * 最新收到的评论
+     *
+     * @param limit
+     * @param id
+     * @return
+     */
+    List<CommentVo> recentComments(int limit, Integer id);
+    /**
      * 最新发表的文章
      *
      * @param limit

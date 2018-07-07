@@ -54,10 +54,11 @@ public class IndexController extends BaseController {
     public String index(HttpServletRequest request){
         LOGGER.info("Enter admin index method");
         HttpSession session = request.getSession();
-        System.out.println(session.getAttribute("userId"));
+        Integer id = (Integer) session.getAttribute("userId");
+        //System.out.println(session.getAttribute("userId"));
 
         //获取comment contents 需要根据当前用户获取
-        List<CommentVo> comments = siteService.recentComments(5);
+        List<CommentVo> comments = siteService.recentComments(5, id);
         List<ContentVo> contents = siteService.recentContents(5);
         //获取statistics需要根据当前登录ID获取
         StatisticsBo statistics = siteService.getStatistics();

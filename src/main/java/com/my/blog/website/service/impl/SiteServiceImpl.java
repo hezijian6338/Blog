@@ -66,6 +66,21 @@ public class SiteServiceImpl implements ISiteService {
     }
 
     @Override
+    public List<CommentVo> recentComments(int limit, Integer id) {
+        LOGGER.debug("Enter recentComments method:limit={}", limit);
+        if (limit < 0 || limit > 10) {
+            limit = 10;
+        }
+        CommentVoExample example = new CommentVoExample();
+        example.setOrderByClause("created desc");
+        example.createCriteria().andOwnerIdEqualTo(id);
+        PageHelper.startPage(1, limit);
+        List<CommentVo> byPage = commentDao.selectByExampleWithBLOBs(example);
+        LOGGER.debug("Exit recentComments method");
+        return byPage;
+    }
+
+    @Override
     public List<ContentVo> recentContents(int limit) {
         LOGGER.debug("Enter recentContents method");
         if (limit < 0 || limit > 10) {
