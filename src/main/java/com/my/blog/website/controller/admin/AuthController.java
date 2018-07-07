@@ -57,9 +57,12 @@ public class AuthController extends BaseController {
         try {
             UserVo user = usersService.login(username, password);
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
+            HttpSession session = request.getSession();
             if (StringUtils.isNotBlank(remeber_me)) {
                 TaleUtils.setCookie(response, user.getUid());
             }
+            System.out.println(user.getUid());
+            session.setAttribute("userId",user.getUid());
             //向日志页面登记该次登录
             logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), user.getUid());
         } catch (Exception e) {
