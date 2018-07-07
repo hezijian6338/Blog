@@ -113,10 +113,9 @@
     </if>
     <include refid="Base_Column_List" />
     from t_contents
-    <!--<if test="_parameter != null">-->
-      <!--<include refid="Example_Where_Clause" />-->
-    <!--</if>-->
-     Where author_id = '1'
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
@@ -266,10 +265,9 @@
   </insert>
   <select id="countByExample" parameterType="com.my.blog.website.model.Vo.ContentVoExample" resultType="java.lang.Long">
     select count(*) from t_contents
-    <!--<if test="_parameter != null">-->
-      <!--<include refid="Example_Where_Clause" />-->
-    <!--</if>-->
-    where author_id = '1'
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update t_contents

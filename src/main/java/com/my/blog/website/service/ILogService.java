@@ -32,4 +32,12 @@ public interface ILogService {
      * @return 日志
      */
     List<LogVo> getLogs(int page,int limit);
+
+    /**
+     * 获取日志分页
+     * @param page 当前页
+     * @param limit 每页条数
+     * @return 日志
+     */
+    List<LogVo> getLogs(int page,int limit,Integer id);
 }

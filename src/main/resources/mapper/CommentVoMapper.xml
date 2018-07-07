@@ -245,10 +245,9 @@
   </insert>
   <select id="countByExample" parameterType="com.my.blog.website.model.Vo.CommentVoExample" resultType="java.lang.Long">
     select count(*) from t_comments
-    <!--<if test="_parameter != null">-->
-      <!--<include refid="Example_Where_Clause" />-->
-    <!--</if>-->
-    where owner_id = '1'
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update t_comments

@@ -57,4 +57,22 @@ public class LogServiceImpl implements ILogService {
         LOGGER.debug("Exit getLogs method");
         return logVos;
     }
+
+    @Override
+    public List<LogVo> getLogs(int page, int limit,Integer id) {
+        LOGGER.debug("Enter getLogs method:page={},linit={}",page,limit);
+        if (page <= 0) {
+            page = 1;
+        }
+        if (limit < 1 || limit > WebConst.MAX_POSTS) {
+            limit = 10;
+        }
+        LogVoExample logVoExample = new LogVoExample();
+        logVoExample.setOrderByClause("id desc");
+        logVoExample.createCriteria().andAuthorIdEqualTo(id);
+        PageHelper.startPage((page - 1) * limit, limit);
+        List<LogVo> logVos = logDao.selectByExample(logVoExample);
+        LOGGER.debug("Exit getLogs method");
+        return logVos;
+    }
 }

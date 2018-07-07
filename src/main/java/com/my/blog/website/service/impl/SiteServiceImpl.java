@@ -96,6 +96,21 @@ public class SiteServiceImpl implements ISiteService {
     }
 
     @Override
+    public List<ContentVo> recentContents(int limit, Integer id) {
+        LOGGER.debug("Enter recentContents method");
+        if (limit < 0 || limit > 10) {
+            limit = 10;
+        }
+        ContentVoExample example = new ContentVoExample();
+        example.createCriteria().andStatusEqualTo(Types.PUBLISH.getType()).andTypeEqualTo(Types.ARTICLE.getType()).andAuthorIdEqualTo(id);
+        example.setOrderByClause("created desc");
+        PageHelper.startPage(1, limit);
+        List<ContentVo> list = contentDao.selectByExample(example);
+        LOGGER.debug("Exit recentContents method");
+        return list;
+    }
+
+    @Override
     public BackResponseBo backup(String bk_type, String bk_path, String fmt) throws Exception {
         BackResponseBo backResponse = new BackResponseBo();
         if (bk_type.equals("attach")) {
@@ -179,6 +194,42 @@ public class SiteServiceImpl implements ISiteService {
         Long comments = commentDao.countByExample(new CommentVoExample());
         //底层进行附件的计算
         Long attachs = attachDao.countByExample(new AttachVoExample());
+
+        //meta 友链无法确定使用方法
+        MetaVoExample metaVoExample = new MetaVoExample();
+        metaVoExample.createCriteria().andTypeEqualTo(Types.LINK.getType());
+        Long links = metaDao.countByExample(metaVoExample);
+
+        statistics.setArticles(articles);
+        statistics.setComments(comments);
+        statistics.setAttachs(attachs);
+        statistics.setLinks(links);
+        LOGGER.debug("Exit getStatistics method");
+        return statistics;
+    }
+
+    @Override
+    public StatisticsBo getStatistics(Integer id) {
+        LOGGER.debug("Enter getStatistics method");
+        StatisticsBo statistics = new StatisticsBo();
+
+        ContentVoExample contentVoExample = new ContentVoExample();
+        CommentVoExample commentVoExample = new CommentVoExample();
+        AttachVoExample attachVoExample = new AttachVoExample();
+
+        //查询的时候对ID进行相关的限定
+        contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType()).andAuthorIdEqualTo(id);
+
+        commentVoExample.createCriteria().andOwnerIdEqualTo(id);
+
+        attachVoExample.createCriteria().andAuthorIdEqualTo(id);
+
+        //底层进行文章的计算
+        Long articles =  contentDao.countByExample(contentVoExample);
+        //底层进行文章评论的计算
+        Long comments = commentDao.countByExample(commentVoExample);
+        //底层进行附件的计算
+        Long attachs = attachDao.countByExample(attachVoExample);
 
         //meta 友链无法确定使用方法
         MetaVoExample metaVoExample = new MetaVoExample();

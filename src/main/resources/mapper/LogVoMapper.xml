@@ -77,10 +77,9 @@
     </if>
     <include refid="Base_Column_List" />
     from t_logs
-    <!--<if test="_parameter != null">-->
-      <!--<include refid="Example_Where_Clause" />-->
-    <!--</if>-->
-     Where author_id = '1'
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>

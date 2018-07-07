@@ -33,6 +33,7 @@ public interface ISiteService {
      * @return
      */
     List<CommentVo> recentComments(int limit, Integer id);
+
     /**
      * 最新发表的文章
      *
@@ -40,6 +41,14 @@ public interface ISiteService {
      * @return
      */
     List<ContentVo> recentContents(int limit);
+
+    /**
+     * 最新发表的文章
+     *
+     * @param limit
+     * @return
+     */
+    List<ContentVo> recentContents(int limit, Integer id);
 
     /**
      * 查询一条评论
@@ -64,6 +73,13 @@ public interface ISiteService {
      * @return
      */
     StatisticsBo getStatistics();
+
+    /**
+     * 获取后台统计数据
+     *
+     * @return
+     */
+    StatisticsBo getStatistics(Integer id);
 
     /**
      * 查询文章归档
