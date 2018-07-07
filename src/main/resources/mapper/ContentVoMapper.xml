@@ -116,7 +116,7 @@
     <!--<if test="_parameter != null">-->
       <!--<include refid="Example_Where_Clause" />-->
     <!--</if>-->
-     Where author_id = '1' AND type = 'post'
+     Where author_id = '1'
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
