@@ -1,5 +1,7 @@
 package com.my.blog.website.model.Vo;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+
 import java.io.Serializable;
 
 /**
@@ -72,7 +74,7 @@ public class ContentVo implements Serializable {
     private Boolean allowComment;
 
     /**
-     * 是否允许ping
+     * 是否允许pings
      */
     private Boolean allowPing;
 
@@ -85,6 +87,11 @@ public class ContentVo implements Serializable {
      * 内容文字
      */
     private String content;
+
+    /**
+     * 作者名称
+     */
+    private UserVo author;
 
     private static final long serialVersionUID = 1L;
 
@@ -214,5 +221,13 @@ public class ContentVo implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setAuthor(UserVo author) {
+        this.author = author;
+    }
+
+    public UserVo getAuthor() {
+        return author;
     }
 }

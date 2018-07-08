@@ -22,6 +22,10 @@
                                                    th:text="${article.title}"></a>
                         </div>
                         <div class="item-meta clearfix">
+                            <small th:text="'by ' + ${article.author.username}"
+                                   th:style="${public}? 'display:' : 'display:none'"></small>
+                        </div>
+                        <div class="item-meta clearfix" th:style="${public}? 'display:none' : 'display:'">
                             <div th:class="'item-meta-ico '+ ${commons.show_icon(article.cid)}"
                                  th:style="'background: url('+@{/user/img/bg-ico.png}+');no-repeat;background-size: 40px auto;' "></div>
                             <div class="item-meta-cat" th:utext="${commons.show_categories(article.categories)}">

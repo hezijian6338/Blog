@@ -12,6 +12,7 @@ import com.my.blog.website.model.Vo.ContentVoExample;
 import com.my.blog.website.service.IContentService;
 import com.my.blog.website.service.IMetaService;
 import com.my.blog.website.service.IRelationshipService;
+import com.my.blog.website.service.IUserService;
 import com.my.blog.website.utils.DateKit;
 import com.my.blog.website.utils.TaleUtils;
 import com.my.blog.website.utils.Tools;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +45,9 @@ public class ContentServiceImpl implements IContentService {
 
     @Resource
     private IMetaService metasService;
+
+    @Resource
+    private IUserService userService;
 
     @Override
     @Transactional
@@ -122,8 +127,15 @@ public class ContentServiceImpl implements IContentService {
 //        利用Dao层去映射Mapper操作数据库，获取数据
         List<ContentVo> data = contentDao.selectByExampleWithBLOBs(example);
 
+        List<ContentVo> dataWithAuthor = new ArrayList<ContentVo>();
+
+        for(ContentVo data1 : data){
+            data1.setAuthor(userService.queryUserById(data1.getAuthorId()));
+            dataWithAuthor.add(data1);
+        }
+
 //        把数据传给页面对象，整理格式（不确定实现方式）
-        PageInfo<ContentVo> pageInfo = new PageInfo<>(data);
+        PageInfo<ContentVo> pageInfo = new PageInfo<>(dataWithAuthor);
         LOGGER.debug("Exit getContents method");
         return pageInfo;
     }
