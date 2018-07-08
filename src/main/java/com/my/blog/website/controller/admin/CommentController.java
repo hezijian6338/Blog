@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by 13 on 2017/2/26.
@@ -31,9 +32,11 @@ public class CommentController extends BaseController {
     public String index(@RequestParam(value = "page", defaultValue = "1") int page,
                         @RequestParam(value = "limit", defaultValue = "15") int limit, HttpServletRequest request) {
         UserVo users = this.user(request);
+        HttpSession session = request.getSession();
+        Integer id = (Integer) session.getAttribute("userId");
         CommentVoExample commentVoExample = new CommentVoExample();
         commentVoExample.setOrderByClause("coid desc");
-        commentVoExample.createCriteria().andAuthorIdNotEqualTo(users.getUid());
+        commentVoExample.createCriteria().andAuthorIdNotEqualTo(users.getUid()).andOwnerIdEqualTo(id);
         PageInfo<CommentVo> commentsPaginator = commentsService.getCommentsWithPage(commentVoExample, page, limit);
         request.setAttribute("comments", commentsPaginator);
         return "admin/comment_list";

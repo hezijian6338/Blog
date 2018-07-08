@@ -16,6 +16,15 @@ public interface IAttachService {
     PageInfo<AttachVo> getAttachs(Integer page,Integer limit);
 
     /**
+     * 分页查询附件
+     * @param page
+     * @param limit
+     * @param id
+     * @return
+     */
+    PageInfo<AttachVo> getAttachs(Integer page,Integer limit, Integer id);
+
+    /**
      * 保存附件
      *
      * @param fname

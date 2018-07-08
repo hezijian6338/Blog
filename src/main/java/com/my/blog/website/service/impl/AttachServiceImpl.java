@@ -35,6 +35,16 @@ public class AttachServiceImpl implements IAttachService {
     }
 
     @Override
+    public PageInfo<AttachVo> getAttachs(Integer page, Integer limit,Integer id) {
+        PageHelper.startPage(page, limit);
+        AttachVoExample attachVoExample = new AttachVoExample();
+        attachVoExample.createCriteria().andAuthorIdEqualTo(id);
+        attachVoExample.setOrderByClause("id desc");
+        List<AttachVo> attachVos = attachDao.selectByExample(attachVoExample);
+        return new PageInfo<>(attachVos);
+    }
+
+    @Override
     public AttachVo selectById(Integer id) {
         if(null != id){
             return attachDao.selectByPrimaryKey(id);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by 13 on 2017/2/21.
@@ -36,9 +37,11 @@ public class PageController extends BaseController {
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Integer id = (Integer) session.getAttribute("userId");
         ContentVoExample contentVoExample = new ContentVoExample();
         contentVoExample.setOrderByClause("created desc");
-        contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType());
+        contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType()).andAuthorIdEqualTo(id);
         PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
         request.setAttribute("articles", contentsPaginator);
         return "admin/page_list";
