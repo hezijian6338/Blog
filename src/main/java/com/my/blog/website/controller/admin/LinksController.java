@@ -5,6 +5,7 @@ import com.my.blog.website.model.Bo.RestResponseBo;
 import com.my.blog.website.service.IMetaService;
 import com.my.blog.website.dto.Types;
 import com.my.blog.website.model.Vo.MetaVo;
+import com.my.blog.website.utils.TaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,8 +38,9 @@ public class LinksController extends BaseController {
     @ResponseBody
     public RestResponseBo saveLink(@RequestParam String title, @RequestParam String url,
                                    @RequestParam String logo, @RequestParam Integer mid,
-                                   @RequestParam(value = "sort", defaultValue = "0") int sort) {
+                                   @RequestParam(value = "sort", defaultValue = "0") int sort,HttpServletRequest request) {
         try {
+            Integer id = TaleUtils.getLoginUser(request).getUid();
             MetaVo metas = new MetaVo();
             metas.setName(title);
             metas.setSlug(url);
@@ -49,7 +51,8 @@ public class LinksController extends BaseController {
                 metas.setMid(mid);
                 metasService.update(metas);
             } else {
-                metasService.saveMeta(metas);
+                System.out.println("&&&&&&&&&&&");
+                metasService.saveMeta(metas,id);
             }
         } catch (Exception e) {
             String msg = "友链保存失败";
