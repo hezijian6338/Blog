@@ -1,7 +1,7 @@
 package com.my.blog.website.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.my.blog.website.dao.AttachVoMapper;
+import com.my.blog.website.dao.*;
 import com.my.blog.website.dto.MetaDto;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.model.Bo.ArchiveBo;
@@ -12,9 +12,6 @@ import com.my.blog.website.utils.TaleUtils;
 import com.my.blog.website.utils.backup.Backup;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.controller.admin.AttachController;
-import com.my.blog.website.dao.CommentVoMapper;
-import com.my.blog.website.dao.ContentVoMapper;
-import com.my.blog.website.dao.MetaVoMapper;
 import com.my.blog.website.dto.Types;
 import com.my.blog.website.model.Bo.BackResponseBo;
 import com.my.blog.website.model.Bo.StatisticsBo;
@@ -50,6 +47,9 @@ public class SiteServiceImpl implements ISiteService {
 
     @Resource
     private MetaVoMapper metaDao;
+
+    @Resource
+    private RelationshipsForLinkVoMapper relationshipsForLinkDao;
 
     @Override
     public List<CommentVo> recentComments(int limit) {
@@ -216,6 +216,7 @@ public class SiteServiceImpl implements ISiteService {
         ContentVoExample contentVoExample = new ContentVoExample();
         CommentVoExample commentVoExample = new CommentVoExample();
         AttachVoExample attachVoExample = new AttachVoExample();
+        RelationshipsForLinkVoExample relationshipsForLinkVoExample = new RelationshipsForLinkVoExample();
 
         //查询的时候对ID进行相关的限定
         contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType()).andAuthorIdEqualTo(id);
@@ -224,17 +225,21 @@ public class SiteServiceImpl implements ISiteService {
 
         attachVoExample.createCriteria().andAuthorIdEqualTo(id);
 
+        relationshipsForLinkVoExample.createCriteria().andUidEqualTo(id);
+
         //底层进行文章的计算
         Long articles =  contentDao.countByExample(contentVoExample);
         //底层进行文章评论的计算
         Long comments = commentDao.countByExample(commentVoExample);
         //底层进行附件的计算
         Long attachs = attachDao.countByExample(attachVoExample);
+        //底层进行友链的计算
+        Long links = relationshipsForLinkDao.countByExample(relationshipsForLinkVoExample);
 
         //meta 友链无法确定使用方法
-        MetaVoExample metaVoExample = new MetaVoExample();
-        metaVoExample.createCriteria().andTypeEqualTo(Types.LINK.getType());
-        Long links = metaDao.countByExample(metaVoExample);
+//        MetaVoExample metaVoExample = new MetaVoExample();
+//        metaVoExample.createCriteria().andTypeEqualTo(Types.LINK.getType());
+//        Long links = metaDao.countByExample(metaVoExample);
 
         statistics.setArticles(articles);
         statistics.setComments(comments);
