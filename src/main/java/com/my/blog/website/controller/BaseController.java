@@ -34,6 +34,15 @@ public abstract class BaseController {
         return this;
     }
 
+    public BaseController author(HttpServletRequest request, String author) {
+        request.setAttribute("author", author);
+        return this;
+    }
+
+    public BaseController authorId(HttpServletRequest request, Integer authorId) {
+        request.setAttribute("authorId", authorId);
+        return this;
+    }
 
     public BaseController keywords(HttpServletRequest request, String keywords) {
         request.setAttribute("keywords", keywords);

@@ -64,11 +64,15 @@ public class IndexController extends BaseController {
      */
     @GetMapping(value = "un/{username}")
     public String index(HttpServletRequest request, @PathVariable String username, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+
+//        个人博客接入口,(最后的参数传入地址栏上填写的用户名)
         return this.index(request, 1, limit, username);
     }
 
     @GetMapping(value = "/")
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+
+//        游客接入口,(游客以0为登陆名称登陆)
         return this.index(request, 1, limit, "0");
     }
 
@@ -90,6 +94,7 @@ public class IndexController extends BaseController {
 //        初始化用户的uid为0，则不根据作者查询文章
         int uid = 0;
 
+//        检查当前操作者是以博客主的身份登陆,还是以游客的身份登陆
         if (!username.equals("0")) {
 
 //            根据用户的博客名字来获取该用户的信息
@@ -98,7 +103,8 @@ public class IndexController extends BaseController {
 //            根据返回的用户信息，取得该用户的id
             uid = user.getUid();
 
-            request.setAttribute("authorId", uid);
+//            给前端传值当前用户的id
+            this.authorId(request, uid);
         } else {
 
 //            如果是以公共的身份访问，即游客的身份访问，则设置该参数为true，前端不显示右上角三个私人按钮
@@ -146,7 +152,7 @@ public class IndexController extends BaseController {
         UserVo user = userService.queryUserById(contents.getAuthorId());
 
 //        返回获取的值给前端使用
-        request.setAttribute("author", user.getUsername());
+        this.author(request, user.getUsername());
         request.setAttribute("authorId", user.getUid());
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
@@ -371,9 +377,17 @@ public class IndexController extends BaseController {
     @GetMapping(value = "links/{author_id}")
     public String links(HttpServletRequest request, @PathVariable Integer author_id) {
         List<MetaVo> links = metaService.getMetas(Types.LINK.getType(),author_id);
+
+//        根据当前URL地址获取到的author_id,去查询数据库获取当前的用户对象
         UserVo user = userService.queryUserById(author_id);
-        request.setAttribute("author", user.getUsername());
+
+//        通过抽离的方式,进行对用户名称返回到前端
+        this.author(request, user.getUsername());
+
+//        返回友链的数据到前端
         request.setAttribute("links", links);
+
+//        通过抽离的方式,重定向前端页面的位置
         return this.render("links");
     }
 
@@ -430,18 +444,38 @@ public class IndexController extends BaseController {
      * @param chits
      */
     private void updateArticleHit(Integer cid, Integer chits) {
+
+//        检查当前缓存的点击次数
         Integer hits = cache.hget("article" + cid, "hits");
+
+//        检查数据库传过来的点击次数
         if (chits == null) {
             chits = 0;
         }
+
+//        缓存的点击次数为空的话就赋值为一次,如果不为空就加一次
         hits = null == hits ? 1 : hits + 1;
+
+//        可以设置当前ip地址的用户在一定时间内点击多少次才开始算一次点击,然后存进数据库(防止刷点击数的意思)
         if (hits >= WebConst.HIT_EXCEED) {
+
+//            新建一个文章的对象
             ContentVo temp = new ContentVo();
+
+//            设定文章的id
             temp.setCid(cid);
+
+//            文章现在应该有的点击数加上缓存的点击数
             temp.setHits(chits + hits);
+
+//            对数据库进行更新操作
             contentService.updateContentByCid(temp);
+
+//            重置缓存,重新计算点击次数
             cache.hset("article" + cid, "hits", 1);
         } else {
+
+//            如果点击次数没达到指定的次数,则继续累加,此处为更新缓存次数
             cache.hset("article" + cid, "hits", hits);
         }
     }
