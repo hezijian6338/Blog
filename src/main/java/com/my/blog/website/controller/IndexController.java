@@ -57,7 +57,7 @@ public class IndexController extends BaseController {
 
     /**
      * 首页
-     *
+     * <p>
      * 访问地址修改为un(username)/用户博客名字
      *
      * @return
@@ -90,25 +90,28 @@ public class IndexController extends BaseController {
 //        初始化用户的uid为0，则不根据作者查询文章
         int uid = 0;
 
-        if(!username.equals("0")) {
+        if (!username.equals("0")) {
 
 //            根据用户的博客名字来获取该用户的信息
             UserVo user = userService.queryUserByUsername(username);
 
 //            根据返回的用户信息，取得该用户的id
             uid = user.getUid();
+
+            request.setAttribute("authorId", uid);
         } else {
 
 //            如果是以公共的身份访问，即游客的身份访问，则设置该参数为true，前端不显示右上角三个私人按钮
             request.setAttribute("public", true);
         }
 
+        this.state(request, "index");
+
 //        发送参数给数据逻辑层（Service）进行处理,返回页面所需要的信息/对象（ContentVo）,也就是文章
         PageInfo<ContentVo> articles = contentService.getContents(uid, p, limit);
 
 //        通过request请求把Controller中的结果返回给前台页面进行显示（没想明白为啥不用Model进行传递，而要用传统的Req,Res）
         request.setAttribute("articles", articles);
-
 
 
 //        若显示第几页的参数P,不是显示第一页,则添加显示当前页
@@ -140,12 +143,13 @@ public class IndexController extends BaseController {
             return this.render_404();
         }
 
-        UserVo user =  userService.queryUserById(contents.getAuthorId());
+        UserVo user = userService.queryUserById(contents.getAuthorId());
 
 //        返回获取的值给前端使用
         request.setAttribute("author", user.getUsername());
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
+        this.state(request, "post");
 
 //        加载文章的评论
         completeArticle(request, contents);
@@ -341,10 +345,22 @@ public class IndexController extends BaseController {
      */
     @GetMapping(value = "archives")
     public String archives(HttpServletRequest request) {
-        List<ArchiveBo> archives = siteService.getArchives();
+        request.setAttribute("public", true);
+        return this.archives(request, 0);
+    }
+
+    @GetMapping(value = "archives/{author_id}")
+    public String archives(HttpServletRequest request, @PathVariable Integer author_id) {
+        List<ArchiveBo> archives = siteService.getArchives(author_id);
+        if (author_id != 0) {
+            UserVo user = userService.queryUserById(author_id);
+            request.setAttribute("author", user.getUsername());
+        }
+        this.state(request, "archives");
         request.setAttribute("archives", archives);
         return this.render("archives");
     }
+
 
     /**
      * 友链页

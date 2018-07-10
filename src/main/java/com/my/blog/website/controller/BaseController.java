@@ -29,6 +29,12 @@ public abstract class BaseController {
         return this;
     }
 
+    public BaseController state(HttpServletRequest request, String state) {
+        request.setAttribute("state", state);
+        return this;
+    }
+
+
     public BaseController keywords(HttpServletRequest request, String keywords) {
         request.setAttribute("keywords", keywords);
         return this;

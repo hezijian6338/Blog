@@ -153,11 +153,11 @@ public final class Commons {
     /**
      * 返回文章作者博客主界面
      *
-     * @param username
+     * @param para
      * @return
      */
-    public static String permalink(String username) {
-        return site_url("/un/" + username);
+    public static String permalink(String path, String para) {
+        return site_option("site_url") + path + '/' + para;
     }
 
     /**
