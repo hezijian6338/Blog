@@ -86,7 +86,7 @@ public interface ISiteService {
      *
      * @return
      */
-    List<ArchiveBo> getArchives();
+    List<ArchiveBo> getArchives(Integer author_id);
 
     /**
      * 获取分类/标签列表

@@ -250,13 +250,16 @@ public class SiteServiceImpl implements ISiteService {
     }
 
     @Override
-    public List<ArchiveBo> getArchives() {
+    public List<ArchiveBo> getArchives(Integer author_id) {
         LOGGER.debug("Enter getArchives method");
         List<ArchiveBo> archives = contentDao.findReturnArchiveBo();
         if (null != archives) {
             archives.forEach(archive -> {
                 ContentVoExample example = new ContentVoExample();
                 ContentVoExample.Criteria criteria = example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+                if(author_id != 0) {
+                    criteria.andAuthorIdEqualTo(author_id);
+                }
                 example.setOrderByClause("created desc");
                 String date = archive.getDate();
                 Date sd = DateKit.dateFormat(date, "yyyy年MM月");
