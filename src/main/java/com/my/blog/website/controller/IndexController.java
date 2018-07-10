@@ -367,10 +367,11 @@ public class IndexController extends BaseController {
      *
      * @return
      */
-    @GetMapping(value = "links")
-    public String links(HttpServletRequest request) {
-        Integer id = TaleUtils.getLoginUser(request).getUid();
-        List<MetaVo> links = metaService.getMetas(Types.LINK.getType(),id);
+    @GetMapping(value = "links/{author_id}")
+    public String links(HttpServletRequest request, @PathVariable Integer author_id) {
+        List<MetaVo> links = metaService.getMetas(Types.LINK.getType(),author_id);
+        UserVo user = userService.queryUserById(author_id);
+        request.setAttribute("author", user.getUsername());
         request.setAttribute("links", links);
         return this.render("links");
     }
