@@ -1,16 +1,14 @@
 package com.my.blog.website.service.impl;
 
 import com.my.blog.website.constant.WebConst;
+import com.my.blog.website.dao.RelationshipsForLinkVoMapper;
 import com.my.blog.website.dto.MetaDto;
 import com.my.blog.website.dto.Types;
 import com.my.blog.website.exception.TipException;
-import com.my.blog.website.model.Vo.MetaVo;
-import com.my.blog.website.model.Vo.RelationshipVoKey;
+import com.my.blog.website.model.Vo.*;
 import com.my.blog.website.service.IMetaService;
 import com.my.blog.website.service.IRelationshipService;
 import com.my.blog.website.dao.MetaVoMapper;
-import com.my.blog.website.model.Vo.ContentVo;
-import com.my.blog.website.model.Vo.MetaVoExample;
 import com.my.blog.website.service.IContentService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,6 +36,9 @@ public class MetaServiceImpl implements IMetaService {
 
     @Resource
     private IContentService contentService;
+
+    @Resource
+    private RelationshipsForLinkVoMapper relationshipsDao;
 
     @Override
     public MetaDto getMeta(String type, String name) {
@@ -204,6 +205,19 @@ public class MetaServiceImpl implements IMetaService {
     public void saveMeta(MetaVo metas) {
         if (null != metas) {
             metaDao.insertSelective(metas);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveMeta(MetaVo metas, Integer id) {
+        if (null != metas) {
+            RelationshipForeLinkVoKey relationshipForeLinkVoKey = new RelationshipForeLinkVoKey();
+            relationshipForeLinkVoKey.setMid(metas.getMid());
+            relationshipForeLinkVoKey.setUid(id);
+            metaDao.insertSelective(metas);
+            relationshipsDao.insertSelective(relationshipForeLinkVoKey);
+
         }
     }
 

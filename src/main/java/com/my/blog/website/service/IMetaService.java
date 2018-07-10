@@ -68,6 +68,14 @@ public interface IMetaService {
      */
     void saveMeta(MetaVo metas);
 
+
+    /**
+     * 保存项目
+     * @param metas
+     * @param id
+     */
+    void saveMeta(MetaVo metas,Integer id);
+
     /**
      * 更新项目
      * @param metas
