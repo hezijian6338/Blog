@@ -31,7 +31,7 @@ public interface IMetaService {
      * @param types
      * @return
      */
-    List<MetaVo> getMetas(String types);
+    List<MetaVo> getMetas(String types, Integer id);
 
 
     /**

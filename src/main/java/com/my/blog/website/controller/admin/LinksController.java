@@ -29,7 +29,8 @@ public class LinksController extends BaseController {
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
-        List<MetaVo> metas = metasService.getMetas(Types.LINK.getType());
+        Integer id = TaleUtils.getLoginUser(request).getUid();
+        List<MetaVo> metas = metasService.getMetas(Types.LINK.getType(),id);
         request.setAttribute("links", metas);
         return "admin/links";
     }
@@ -51,7 +52,6 @@ public class LinksController extends BaseController {
                 metas.setMid(mid);
                 metasService.update(metas);
             } else {
-                System.out.println("&&&&&&&&&&&");
                 metasService.saveMeta(metas,id);
             }
         } catch (Exception e) {

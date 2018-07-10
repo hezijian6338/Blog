@@ -10,6 +10,7 @@ import com.my.blog.website.service.IMetaService;
 import com.my.blog.website.service.IRelationshipService;
 import com.my.blog.website.dao.MetaVoMapper;
 import com.my.blog.website.service.IContentService;
+import com.my.blog.website.utils.TaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,12 +56,26 @@ public class MetaServiceImpl implements IMetaService {
     }
 
     @Override
-    public List<MetaVo> getMetas(String types) {
+    public List<MetaVo> getMetas(String types, Integer id) {
         if (StringUtils.isNotBlank(types)) {
-            MetaVoExample metaVoExample = new MetaVoExample();
-            metaVoExample.setOrderByClause("sort desc, mid desc");
-            metaVoExample.createCriteria().andTypeEqualTo(types);
-            return metaDao.selectByExample(metaVoExample);
+            RelationshipsForLinkVoExample relationshipsForLinkVoExample = new RelationshipsForLinkVoExample();
+//            relationshipsForLinkVoExample.setOrderByClause("uid desc");
+            relationshipsForLinkVoExample.createCriteria().andUidEqualTo(id);
+            List<RelationshipForeLinkVoKey> listKey = relationshipsDao.selectByExample(relationshipsForLinkVoExample);
+            System.out.println(listKey.size()+"(((((((((");
+            if(listKey.size() != 0) {
+                List<MetaVo> list = new ArrayList<>();
+                for (int i = 0; i < listKey.size(); i++) {
+                    list.add(metaDao.selectByPrimaryKey(listKey.get(i).getMid()));
+                }
+                return list;
+            }else{
+                return null;
+            }
+//            MetaVoExample metaVoExample = new MetaVoExample();
+//            metaVoExample.setOrderByClause("sort desc, mid desc");
+//            metaVoExample.createCriteria().andTypeEqualTo(types);
+//            return metaDao.selectByExample(metaVoExample);
         }
         return null;
     }
@@ -212,12 +228,13 @@ public class MetaServiceImpl implements IMetaService {
     @Transactional
     public void saveMeta(MetaVo metas, Integer id) {
         if (null != metas) {
-            RelationshipForeLinkVoKey relationshipForeLinkVoKey = new RelationshipForeLinkVoKey();
-            relationshipForeLinkVoKey.setMid(metas.getMid());
-            relationshipForeLinkVoKey.setUid(id);
             metaDao.insertSelective(metas);
+            Integer Mid = metaDao.selectDtoByNameAndType(metas.getName(),metas.getType()).getMid();
+            //通过添加RelationshipForlinksService进行友链和用户之间的关联
+            RelationshipForeLinkVoKey relationshipForeLinkVoKey = new RelationshipForeLinkVoKey();
+            relationshipForeLinkVoKey.setUid(id);
+            relationshipForeLinkVoKey.setMid(Mid);
             relationshipsDao.insertSelective(relationshipForeLinkVoKey);
-
         }
     }
 

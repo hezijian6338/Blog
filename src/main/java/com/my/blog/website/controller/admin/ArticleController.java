@@ -15,6 +15,7 @@ import com.my.blog.website.model.Vo.UserVo;
 import com.my.blog.website.service.IContentService;
 import com.my.blog.website.service.ILogService;
 import com.my.blog.website.service.IMetaService;
+import com.my.blog.website.utils.TaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class ArticleController extends BaseController {
 
     @GetMapping(value = "/publish")
     public String newArticle(HttpServletRequest request) {
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
+        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType(),TaleUtils.getLoginUser(request).getUid());
         request.setAttribute("categories", categories);
         return "admin/article_edit";
     }
@@ -70,7 +71,7 @@ public class ArticleController extends BaseController {
     public String editArticle(@PathVariable String cid, HttpServletRequest request) {
         ContentVo contents = contentsService.getContents(cid);
         request.setAttribute("contents", contents);
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
+        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType(),TaleUtils.getLoginUser(request).getUid());
         request.setAttribute("categories", categories);
         request.setAttribute("active", "article");
         return "admin/article_edit";
