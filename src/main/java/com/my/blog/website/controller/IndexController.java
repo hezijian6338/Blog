@@ -147,6 +147,7 @@ public class IndexController extends BaseController {
 
 //        返回获取的值给前端使用
         request.setAttribute("author", user.getUsername());
+        request.setAttribute("authorId", user.getUid());
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         this.state(request, "post");
