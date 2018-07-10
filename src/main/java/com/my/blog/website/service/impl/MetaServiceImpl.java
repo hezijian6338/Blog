@@ -62,7 +62,6 @@ public class MetaServiceImpl implements IMetaService {
 //            relationshipsForLinkVoExample.setOrderByClause("uid desc");
             relationshipsForLinkVoExample.createCriteria().andUidEqualTo(id);
             List<RelationshipForeLinkVoKey> listKey = relationshipsDao.selectByExample(relationshipsForLinkVoExample);
-            System.out.println(listKey.size()+"(((((((((");
             if(listKey.size() != 0) {
                 List<MetaVo> list = new ArrayList<>();
                 for (int i = 0; i < listKey.size(); i++) {
@@ -72,10 +71,17 @@ public class MetaServiceImpl implements IMetaService {
             }else{
                 return null;
             }
-//            MetaVoExample metaVoExample = new MetaVoExample();
-//            metaVoExample.setOrderByClause("sort desc, mid desc");
-//            metaVoExample.createCriteria().andTypeEqualTo(types);
-//            return metaDao.selectByExample(metaVoExample);
+        }
+        return null;
+    }
+
+    @Override
+    public List<MetaVo> getMetas(String types) {
+        if (StringUtils.isNotBlank(types)) {
+            MetaVoExample metaVoExample = new MetaVoExample();
+            metaVoExample.setOrderByClause("sort desc, mid desc");
+            metaVoExample.createCriteria().andTypeEqualTo(types);
+            return metaDao.selectByExample(metaVoExample);
         }
         return null;
     }

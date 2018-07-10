@@ -62,7 +62,7 @@ public class ArticleController extends BaseController {
 
     @GetMapping(value = "/publish")
     public String newArticle(HttpServletRequest request) {
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType(),TaleUtils.getLoginUser(request).getUid());
+        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
         request.setAttribute("categories", categories);
         return "admin/article_edit";
     }
@@ -71,7 +71,7 @@ public class ArticleController extends BaseController {
     public String editArticle(@PathVariable String cid, HttpServletRequest request) {
         ContentVo contents = contentsService.getContents(cid);
         request.setAttribute("contents", contents);
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType(),TaleUtils.getLoginUser(request).getUid());
+        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
         request.setAttribute("categories", categories);
         request.setAttribute("active", "article");
         return "admin/article_edit";

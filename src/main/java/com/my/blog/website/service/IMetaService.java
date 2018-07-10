@@ -35,6 +35,13 @@ public interface IMetaService {
 
 
     /**
+     * 根据类型查询项目列表
+     * @param types
+     * @return
+     */
+    List<MetaVo> getMetas(String types);
+
+    /**
      * 保存多个项目
      * @param cid
      * @param names
