@@ -150,6 +150,7 @@ public class IndexController extends BaseController {
 
         UserVo user = userService.queryUserById(contents.getAuthorId());
 
+        contents.setCommentsNum(commentService.countComment(contents.getCid()));
 //        返回获取的值给前端使用
         this.author(request, user.getUsername());
         request.setAttribute("authorId", user.getUid());
@@ -185,6 +186,7 @@ public class IndexController extends BaseController {
             return this.render_404();
         }
         String author_name = userService.queryUserById(contents.getAuthorId()).getUsername();
+        contents.setCommentsNum(commentService.countComment(contents.getCid()));
         request.setAttribute("author", author_name);
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);

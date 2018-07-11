@@ -57,4 +57,9 @@ public interface ICommentService {
      */
     void update(CommentVo comments);
 
+    /**
+     * 显示当前评论的数量
+     * @param id
+     */
+    int countComment(Integer id);
 }

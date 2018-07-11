@@ -127,6 +127,16 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
+    public int countComment(Integer id) {
+        CommentVoExample commentVoExample = new CommentVoExample();
+        CommentVoExample.Criteria criteria = commentVoExample.createCriteria();
+        criteria.andCidEqualTo(id).andStatusEqualTo("approved");
+        int  i = (int) commentDao.countByExample(commentVoExample);
+        System.out.println(i);
+        return i;
+    }
+
+    @Override
     @Transactional
     public void delete(Integer coid, Integer cid) {
         if (null == coid) {
