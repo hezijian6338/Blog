@@ -11,6 +11,7 @@ import com.my.blog.website.dto.Types;
 import com.my.blog.website.model.Vo.ContentVo;
 import com.my.blog.website.model.Vo.ContentVoExample;
 import com.my.blog.website.service.IContentService;
+import com.my.blog.website.utils.TaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,13 +38,21 @@ public class PageController extends BaseController {
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Integer id = (Integer) session.getAttribute("userId");
-        ContentVoExample contentVoExample = new ContentVoExample();
-        contentVoExample.setOrderByClause("created desc");
-        contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType()).andAuthorIdEqualTo(id);
-        PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
-        request.setAttribute("articles", contentsPaginator);
+
+        Integer id = TaleUtils.getLoginUser(request).getUid();
+        if(!(TaleUtils.getLoginUser(request).getGroupName().equals("admin"))) {
+            ContentVoExample contentVoExample = new ContentVoExample();
+            contentVoExample.setOrderByClause("created desc");
+            contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType()).andAuthorIdEqualTo(id);
+            PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
+            request.setAttribute("articles", contentsPaginator);
+        }else{
+            ContentVoExample contentVoExample = new ContentVoExample();
+            contentVoExample.setOrderByClause("created desc");
+            contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType());
+            PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
+            request.setAttribute("articles", contentsPaginator);
+        }
         return "admin/page_list";
     }
 

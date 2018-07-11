@@ -1,6 +1,5 @@
 package com.my.blog.website.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.dto.ErrorCode;
@@ -185,6 +184,8 @@ public class IndexController extends BaseController {
         if (null == contents) {
             return this.render_404();
         }
+        String author_name = userService.queryUserById(contents.getAuthorId()).getUsername();
+        request.setAttribute("author", author_name);
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         completeArticle(request, contents);

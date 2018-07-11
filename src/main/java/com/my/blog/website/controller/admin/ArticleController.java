@@ -63,14 +63,24 @@ public class ArticleController extends BaseController {
 //        存放根据创建时间倒序的SQL语句
         contentVoExample.setOrderByClause("created desc");
 
+        if(!(TaleUtils.getLoginUser(request).getGroupName().equals("admin"))) {
 //        存放查找文章类型和根据用户id来筛选的SQL语句
-        contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andAuthorIdEqualTo(id);
+            contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andAuthorIdEqualTo(id);
 
 //        根据这个简单对象类的信息去调用service的执行方法,获取符合要求的文章的列表
-        PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, page, limit);
+            PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, page, limit);
 
-//        把获取到的文章信息返回给前端
-        request.setAttribute("articles", contentsPaginator);
+            //        把获取到的文章信息返回给前端
+            request.setAttribute("articles", contentsPaginator);
+
+        }else{
+            contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType());
+
+            PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, page, limit);
+
+            //        把获取到的文章信息返回给前端
+            request.setAttribute("articles", contentsPaginator);
+        }
 
 //        定位前端的页面
         return "admin/article_list";

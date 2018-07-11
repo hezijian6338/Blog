@@ -7,6 +7,7 @@ import com.my.blog.website.model.Vo.CommentVo;
 import com.my.blog.website.model.Vo.CommentVoExample;
 import com.my.blog.website.model.Vo.UserVo;
 import com.my.blog.website.service.ICommentService;
+import com.my.blog.website.utils.TaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,15 @@ public class CommentController extends BaseController {
         Integer id = (Integer) session.getAttribute("userId");
         CommentVoExample commentVoExample = new CommentVoExample();
         commentVoExample.setOrderByClause("coid desc");
-        commentVoExample.createCriteria().andAuthorIdNotEqualTo(users.getUid()).andOwnerIdEqualTo(id);
-        PageInfo<CommentVo> commentsPaginator = commentsService.getCommentsWithPage(commentVoExample, page, limit);
-        request.setAttribute("comments", commentsPaginator);
+        if(!(TaleUtils.getLoginUser(request).getGroupName().equals("admin"))) {
+            commentVoExample.createCriteria().andAuthorIdNotEqualTo(users.getUid()).andOwnerIdEqualTo(id);
+            PageInfo<CommentVo> commentsPaginator = commentsService.getCommentsWithPage(commentVoExample, page, limit);
+            request.setAttribute("comments", commentsPaginator);
+        }else{
+            commentVoExample.createCriteria().andAuthorIdNotEqualTo(users.getUid());
+            PageInfo<CommentVo> commentsPaginator = commentsService.getCommentsWithPage(commentVoExample, page, limit);
+            request.setAttribute("comments", commentsPaginator);
+        }
         return "admin/comment_list";
     }
 

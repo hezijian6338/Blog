@@ -59,20 +59,37 @@ public class IndexController extends BaseController {
         UserVo user = userService.queryUserById(id);
         //System.out.println(session.getAttribute("userId"));
 
-        //获取comment contents 需要根据当前用户获取
-        List<CommentVo> comments = siteService.recentComments(5, id);
-        List<ContentVo> contents = siteService.recentContents(5, id);
-        //获取statistics需要根据当前登录ID获取
-        StatisticsBo statistics = siteService.getStatistics(id);
-        // 取最新的20条日志
-        List<LogVo> logs = logService.getLogs(1, 5, id);
+        if(!(TaleUtils.getLoginUser(request).getGroupName().equals("admin"))) {
+            //获取comment contents 需要根据当前用户获取
+            List<CommentVo> comments = siteService.recentComments(5, id);
+            List<ContentVo> contents = siteService.recentContents(5, id);
+            //获取statistics需要根据当前登录ID获取
+            StatisticsBo statistics = siteService.getStatistics(id);
+            // 取最新的20条日志
+            List<LogVo> logs = logService.getLogs(1, 5, id);
 
-        request.setAttribute("comments", comments);
-        request.setAttribute("articles", contents);
-        request.setAttribute("statistics", statistics);
-        this.author(request, user.getUsername());
-        request.setAttribute("logs", logs);
-        LOGGER.info("Exit admin index method");
+            request.setAttribute("comments", comments);
+            request.setAttribute("articles", contents);
+            request.setAttribute("statistics", statistics);
+            this.author(request, user.getUsername());
+            request.setAttribute("logs", logs);
+            LOGGER.info("Exit admin index method");
+        }else{
+            //获取comment contents 需要根据当前用户获取
+            List<CommentVo> comments = siteService.recentComments(5);
+            List<ContentVo> contents = siteService.recentContents(5);
+            //获取statistics需要根据当前登录ID获取
+            StatisticsBo statistics = siteService.getStatistics();
+            // 取最新的20条日志
+            List<LogVo> logs = logService.getLogs(1, 5);
+
+            request.setAttribute("comments", comments);
+            request.setAttribute("articles", contents);
+            request.setAttribute("statistics", statistics);
+            this.author(request, user.getUsername());
+            request.setAttribute("logs", logs);
+            LOGGER.info("Exit admin index method");
+        }
         return "admin/index";
     }
 

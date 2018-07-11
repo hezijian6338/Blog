@@ -29,9 +29,14 @@ public class LinksController extends BaseController {
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
-        Integer id = TaleUtils.getLoginUser(request).getUid();
-        List<MetaVo> metas = metasService.getMetas(Types.LINK.getType(),id);
-        request.setAttribute("links", metas);
+        if(!(TaleUtils.getLoginUser(request).getGroupName().equals("admin"))) {
+            Integer id = TaleUtils.getLoginUser(request).getUid();
+            List<MetaVo> metas = metasService.getMetas(Types.LINK.getType(), id);
+            request.setAttribute("links", metas);
+        }else{
+            List<MetaVo> metas = metasService.getMetas(Types.LINK.getType());
+            request.setAttribute("links", metas);
+        }
         return "admin/links";
     }
 
