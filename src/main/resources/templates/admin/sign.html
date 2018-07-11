@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="pic=${commons.random(5, '.png')}" th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="shortcut icon" th:href="@{/admin/images/favicon.png}"/>
-    <title>My Blog - 用户登录</title>
+    <title>My Blog - 用户注册</title>
     <link th:href="@{//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/admin/css/style.min.css}" rel="stylesheet" type="text/css"/>
@@ -49,15 +49,15 @@
     </style>
 
 </head>
-<body th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'" >
+<body>
 <div style="margin: 0 auto; padding-bottom: 0%; padding-top: 7.5%; width: 380px;">
     <div class="panel panel-color panel-danger panel-pages panel-shadow">
         <div class="panel-heading bg-img">
             <div class="bg-overlay"></div>
-            <h3 class="text-center m-t-10"> Login My Blog</h3>
+            <h3 class="text-center m-t-10"> Sign My Blog</h3>
         </div>
         <div class="panel-body">
-            <form class="form-horizontal m-t-20" method="post" id="loginForm" onsubmit="return checkForm()">
+            <form class="form-horizontal m-t-20" method="post" id="signForm" onsubmit="return checkForm()">
                 <div class="form-group">
                     <div class="col-xs-12">
                         <input class=" input-lg input-border" name="username" type="text" required=""
@@ -72,20 +72,26 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <div class="checkbox checkbox-danger">
-                            <input id="checkbox-signup" name="remeber_me" type="checkbox"/>
-                            <label for="checkbox-signup">记住我</label>
-                        </div>
+                        <input class=" input-lg input-border" name="email" type="text" required=""
+                               placeholder="邮箱:"/>
                     </div>
                 </div>
+                <!--<div class="form-group">-->
+                    <!--<div class="col-xs-12">-->
+                        <!--<div class="checkbox checkbox-danger">-->
+                            <!--<input id="checkbox-signup" name="remeber_me" type="checkbox"/>-->
+                            <!--<label for="checkbox-signup">记住我</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="form-group text-center m-t-40">
                     <div class="col-xs-12">
-                        <button class="btn btn-danger btn-lg btn-rounded btn-block w-lg waves-effect waves-light" style="box-shadow: 0px 0px 4px #868282;" type="submit">登&nbsp;录
+                        <button class="btn btn-danger btn-lg btn-rounded btn-block w-lg waves-effect waves-light" style="box-shadow: 0px 0px 4px #868282;" type="submit">注&nbsp;册
                         </button>
                     </div>
                 </div>
                 <div class="text-center m-t-10" style="text-align: center">
-                    <a th:href="${commons.site_url('/sign')}">Create</a>
+                    <a th:href="${commons.site_url('/admin/login')}">登陆~</a>
                 </div>
             </form>
         </div>
@@ -101,13 +107,15 @@
     var tale = new $.tale();
     function checkForm() {
         tale.post({
-            url: '/admin/login',
-            data: $("#loginForm").serialize(),
+            url: '/sign/new',
+            data: $("#signForm").serialize(),
             success: function (result) {
+
                 if (result && result.success) {
-                    window.location.href = '/admin/index';
+                    tale.alertOk("注册成功，跳转到登陆页面");
+                    setTimeout("window.location.href = '/admin/login'",2000);
                 } else {
-                    tale.alertError(result.msg || '登录失败');
+                    tale.alertError(result.msg || '注册失败');
                 }
             }
         });
