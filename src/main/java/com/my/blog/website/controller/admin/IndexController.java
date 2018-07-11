@@ -55,6 +55,8 @@ public class IndexController extends BaseController {
         LOGGER.info("Enter admin index method");
         HttpSession session = request.getSession();
         Integer id = (Integer) session.getAttribute("userId");
+
+        UserVo user = userService.queryUserById(id);
         //System.out.println(session.getAttribute("userId"));
 
         //获取comment contents 需要根据当前用户获取
@@ -68,6 +70,7 @@ public class IndexController extends BaseController {
         request.setAttribute("comments", comments);
         request.setAttribute("articles", contents);
         request.setAttribute("statistics", statistics);
+        this.author(request, user.getUsername());
         request.setAttribute("logs", logs);
         LOGGER.info("Exit admin index method");
         return "admin/index";
