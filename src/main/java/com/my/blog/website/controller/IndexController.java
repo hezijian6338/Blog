@@ -148,9 +148,11 @@ public class IndexController extends BaseController {
             return this.render_404();
         }
 
+//        用抽离的一个方法根据作者的id来获取该作者的相关信息
         UserVo user = this.getUserById(contents.getAuthorId());
 
         contents.setCommentsNum(commentService.countComment(contents.getCid()));
+
 //        返回获取的值给前端使用
         this.author(request, user.getUsername());
         request.setAttribute("authorId", user.getUid());
@@ -187,7 +189,8 @@ public class IndexController extends BaseController {
         }
         String author_name = userService.queryUserById(contents.getAuthorId()).getUsername();
         contents.setCommentsNum(commentService.countComment(contents.getCid()));
-        request.setAttribute("author", author_name);
+
+        this.author(request, author_name);
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         completeArticle(request, contents);
@@ -331,12 +334,19 @@ public class IndexController extends BaseController {
     @GetMapping(value = "category/{keyword}/{page}")
     public String categories(HttpServletRequest request, @PathVariable String keyword,
                              @PathVariable int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+
+//        检查显示页数参数是否符合规范
         page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
+
+//        根据需要的分类查询中转查询参数
         MetaDto metaDto = metaService.getMeta(Types.CATEGORY.getType(), keyword);
+
+//        如果查找不到对应的信息则返回错误页面
         if (null == metaDto) {
             return this.render_404();
         }
 
+//        利用上面查询到中转查询参数来查询对应的文章信息
         PageInfo<ContentVo> contentsPaginator = contentService.getArticles(metaDto.getMid(), page, limit);
 
         request.setAttribute("articles", contentsPaginator);
@@ -355,17 +365,28 @@ public class IndexController extends BaseController {
      */
     @GetMapping(value = "archives")
     public String archives(HttpServletRequest request) {
+
+//        告诉前端页面现在是处于游客页面,所以请求的地址是不带具体作者的id
         request.setAttribute("public", true);
         return this.archives(request, 0);
     }
 
     @GetMapping(value = "archives/{author_id}")
     public String archives(HttpServletRequest request, @PathVariable Integer author_id) {
+//        由于该页面是不需要对外提供的链接,所有地址链接中直接使用了id信息,而不是作者名称⬆️
+
+//        根据作者的id,来查找对应的归档信息,其实是和查询对应的文章是一样的道理,只是归档显示的具体信息会有所不同,所以调用的方法有所区别
         List<ArchiveBo> archives = siteService.getArchives(author_id);
+
+//        相当于现在处于的函数是公共函数,能够处理带id和不带id的情况,当id值为0是对应的情况就是不带id的情况,即是游客状态,此处就是做这个判断
         if (author_id != 0) {
+
+//            其实可以写成一句话来完成整个传值调用,但是太过冗长,难以理解,所以还是分开描述写
             UserVo user = this.getUserById(author_id);
             this.author(request, user.getUsername());
         }
+
+//        返回状态用给前端,便于前端进行判断按钮的显示和状态判断
         this.state(request, "archives");
         this.authorId(request, author_id);
         request.setAttribute("archives", archives);
