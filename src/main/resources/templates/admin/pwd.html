@@ -101,13 +101,13 @@
     var tale = new $.tale();
     function checkForm() {
         tale.post({
-            url: '/forget/find',
+            url: '/pwd/oldPWD',
             data: $("#signForm").serialize(),
             success: function (result) {
 
                 if (result && result.success) {
                     tale.alertOk("请登录邮箱 接收相关信息");
-                    setTimeout("window.location.href = '/forget/modify'",2000);
+                    setTimeout("window.location.href = '/admin/login'",2000);
                 } else {
                     tale.alertError(result.msg || '输入有误 请确认输入信息是否正确');
                 }

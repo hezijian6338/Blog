@@ -72,8 +72,9 @@ public class EmailUtils {
         // 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）
         // 5. Content: 邮件正文（可以使用html标签）（内容有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改发送内容）
         message.setSubject("修改密码申请", "UTF-8");
-        message.setContent("亲爱的用户，<br>  你已经开启了找回密码的流程<br> 请按照指定步骤操作。。<br><h3>{password}</h3>", "text/html;charset=UTF-8");
-
+        message.setContent(
+                "<html><head></head><body><h1>亲爱的用户，<br>  你已经开启了找回密码的流程<br> 请按照指定步骤操作。。<br><h1><h3><a href='http://localhost:8080/pwd/newPWD/"+ receiveMail +"'>http://localhost:8080</a></h3></body></html>"
+                , "text/html;charset=UTF-8");
 
         // 6. 设置发件时间
         message.setSentDate(new Date());
