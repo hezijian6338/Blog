@@ -83,9 +83,13 @@ public class PageController extends BaseController {
         contents.setType(Types.PAGE.getType());
         if (null != allowComment) {
             contents.setAllowComment(allowComment == 1);
+        }else{
+            contents.setAllowComment(true);
         }
         if (null != allowPing) {
             contents.setAllowPing(allowPing == 1);
+        }else{
+            contents.setAllowPing(true);
         }
         contents.setAuthorId(users.getUid());
         String result = contentsService.publish(contents);
