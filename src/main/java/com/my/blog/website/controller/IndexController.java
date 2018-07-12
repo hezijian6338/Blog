@@ -104,6 +104,10 @@ public class IndexController extends BaseController {
 
 //            给前端传值当前用户的id
             this.authorId(request, uid);
+
+//            抽离获得用户自定义页面给前端显示的函数
+            this.getPage(request, uid);
+
         } else {
 
 //            如果是以公共的身份访问，即游客的身份访问，则设置该参数为true，前端不显示右上角三个私人按钮
@@ -153,6 +157,9 @@ public class IndexController extends BaseController {
 
         contents.setCommentsNum(commentService.countComment(contents.getCid()));
 
+
+        this.getPage(request, contents.getAuthorId());
+
 //        返回获取的值给前端使用
         this.author(request, user.getUsername());
         request.setAttribute("authorId", user.getUid());
@@ -189,6 +196,8 @@ public class IndexController extends BaseController {
         }
         String author_name = userService.queryUserById(contents.getAuthorId()).getUsername();
         contents.setCommentsNum(commentService.countComment(contents.getCid()));
+
+        this.getPage(request, contents.getAuthorId());
 
         this.author(request, author_name);
         request.setAttribute("article", contents);
@@ -381,6 +390,8 @@ public class IndexController extends BaseController {
 //        相当于现在处于的函数是公共函数,能够处理带id和不带id的情况,当id值为0是对应的情况就是不带id的情况,即是游客状态,此处就是做这个判断
         if (author_id != 0) {
 
+            this.getPage(request, author_id);
+
 //            其实可以写成一句话来完成整个传值调用,但是太过冗长,难以理解,所以还是分开描述写
             UserVo user = this.getUserById(author_id);
             this.author(request, user.getUsername());
@@ -405,6 +416,8 @@ public class IndexController extends BaseController {
 
 //        根据当前URL地址获取到的author_id,去查询数据库获取当前的用户对象
         UserVo user = this.getUserById(author_id);
+
+        this.getPage(request, author_id);
 
 //        通过抽离的方式,进行对用户名称返回到前端
         this.author(request, user.getUsername());
@@ -438,10 +451,12 @@ public class IndexController extends BaseController {
             request.setAttribute("comments", commentsPaginator);
         }
         UserVo user = this.getUserById(contents.getAuthorId());
+
+        this.getPage(request, contents.getAuthorId());
         request.setAttribute("article", contents);
         this.authorId(request, contents.getAuthorId());
         this.author(request, user.getUsername());
-        this.state(request, "about");
+        this.state(request, pagename);
         if (!checkHitsFrequency(request, String.valueOf(contents.getCid()))) {
             updateArticleHit(contents.getCid(), contents.getHits());
         }
@@ -584,6 +599,11 @@ public class IndexController extends BaseController {
         }
         cache.hset(Types.HITS_FREQUENCY.getType(), val, 1, WebConst.HITS_LIMIT_TIME);
         return false;
+    }
+
+    private void getPage(HttpServletRequest request, Integer author_id) {
+        List<ContentVo> page = contentService.getPageInfo(author_id);
+        this.pageInfo(request, page);
     }
 
 }

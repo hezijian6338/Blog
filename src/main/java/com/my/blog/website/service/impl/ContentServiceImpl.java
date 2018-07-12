@@ -176,6 +176,20 @@ public class ContentServiceImpl implements IContentService {
         return null;
     }
 
+    public List<ContentVo> getPageInfo(Integer author_id) {
+        ContentVoExample example = new ContentVoExample();
+
+//        设定最后显示文章的排序方式根据创建时间
+        example.setOrderByClause("created desc");
+
+        example.createCriteria().andAuthorIdEqualTo(author_id).andTypeEqualTo(Types.PAGE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+
+        //        利用Dao层去映射Mapper操作数据库，获取数据
+        List<ContentVo> data = contentDao.selectByExampleWithBLOBs(example);
+
+        return data;
+    }
+
     @Override
     public void updateContentByCid(ContentVo contentVo) {
         if (null != contentVo && null != contentVo.getCid()) {

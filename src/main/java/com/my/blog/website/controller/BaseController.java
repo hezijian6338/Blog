@@ -1,5 +1,6 @@
 package com.my.blog.website.controller;
 
+import com.my.blog.website.model.Vo.ContentVo;
 import com.my.blog.website.model.Vo.UserVo;
 import com.my.blog.website.service.IUserService;
 import com.my.blog.website.utils.TaleUtils;
@@ -7,6 +8,7 @@ import com.my.blog.website.utils.MapCache;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by 13 on 2017/2/21.
@@ -52,6 +54,11 @@ public abstract class BaseController {
     public UserVo getUserById(Integer authorId) {
         UserVo user = userService.queryUserById(authorId);
         return user;
+    }
+
+    public BaseController pageInfo(HttpServletRequest request, List<ContentVo> pageInfo) {
+        request.setAttribute("pageInfo", pageInfo);
+        return this;
     }
 
     public BaseController keywords(HttpServletRequest request, String keywords) {

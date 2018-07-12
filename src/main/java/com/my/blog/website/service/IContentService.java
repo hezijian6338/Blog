@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.my.blog.website.model.Vo.ContentVoExample;
 import com.my.blog.website.model.Vo.ContentVo;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/3/13 013.
  */
@@ -38,6 +40,14 @@ public interface IContentService {
      * @return ContentVo
      */
     ContentVo getContents(String id);
+
+    /**
+     * 根据id获取自定义页面的信息
+     *
+     * @param  author_id
+     * @return ContentVo
+     */
+    List<ContentVo> getPageInfo(Integer author_id);
 
     /**
      * 根据主键更新
