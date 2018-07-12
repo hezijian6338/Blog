@@ -97,6 +97,27 @@ public class UserServiceImpl implements IUserService {
         return userVos.get(0);
     }
 
+
+    @Override
+    public UserVo findPassword(String username, String email) {
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(email)) {
+            throw new TipException("用户名和邮箱不能为空");
+        }
+        UserVoExample example = new UserVoExample();
+        UserVoExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        long count = userDao.countByExample(example);
+        if (count < 1) {
+            throw new TipException("不存在该用户");
+        }
+        criteria.andEmailEqualTo(email);
+        List<UserVo> userVos = userDao.selectByExample(example);
+        if (userVos.size() != 1) {
+            throw new TipException("用户名或邮箱错误");
+        }
+        return userVos.get(0);
+    }
+
     @Override
     @Transactional
     public void updateByUid(UserVo userVo) {
@@ -108,4 +129,5 @@ public class UserServiceImpl implements IUserService {
             throw new TipException("update user by uid and retrun is not one");
         }
     }
+
 }

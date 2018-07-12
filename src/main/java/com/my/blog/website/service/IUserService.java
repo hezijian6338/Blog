@@ -44,4 +44,14 @@ public interface IUserService {
      * @return
      */
     void updateByUid(UserVo userVo);
+
+    /**
+     * 找回密码 获取密码
+     * @param username
+     * @param email
+     * @return
+     */
+    UserVo findPassword(String username, String email);
+
+
 }
