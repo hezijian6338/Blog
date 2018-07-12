@@ -364,9 +364,10 @@ public class IndexController extends BaseController {
         List<ArchiveBo> archives = siteService.getArchives(author_id);
         if (author_id != 0) {
             UserVo user = this.getUserById(author_id);
-            request.setAttribute("author", user.getUsername());
+            this.author(request, user.getUsername());
         }
         this.state(request, "archives");
+        this.authorId(request, author_id);
         request.setAttribute("archives", archives);
         return this.render("archives");
     }
@@ -387,8 +388,12 @@ public class IndexController extends BaseController {
 //        通过抽离的方式,进行对用户名称返回到前端
         this.author(request, user.getUsername());
 
+        this.authorId(request, author_id);
+
 //        返回友链的数据到前端
         request.setAttribute("links", links);
+
+        this.state(request, "links");
 
 //        通过抽离的方式,重定向前端页面的位置
         return this.render("links");
@@ -415,6 +420,7 @@ public class IndexController extends BaseController {
         request.setAttribute("article", contents);
         this.authorId(request, contents.getAuthorId());
         this.author(request, user.getUsername());
+        this.state(request, "about");
         if (!checkHitsFrequency(request, String.valueOf(contents.getCid()))) {
             updateArticleHit(contents.getCid(), contents.getHits());
         }
@@ -522,6 +528,7 @@ public class IndexController extends BaseController {
         request.setAttribute("meta", metaDto);
         request.setAttribute("type", "标签");
         request.setAttribute("keyword", name);
+        request.setAttribute("public", true);
 
         return this.render("page-category");
     }

@@ -35,11 +35,11 @@
 
         <!--添加了判断当前登陆的是否为公共浏览状态，若为true，则不显示这三个按钮，若是指定博客主登陆，则显示这三个按钮-->
         <div class="navbar-menu">
-            <a th:if="${state == 'index' &amp;&amp; public != true}" th:href="${state == 'archives'}? '' : ${commons.site_url('/archives')} + '/' + ${authorId}">归档</a>
-            <a th:if="${state == 'index' &amp;&amp; public == true}" th:href="${commons.site_url('/archives')}">归档</a>
-            <a th:if="${state != 'index'}" th:href="${public}? ${commons.site_url('/')} : ${commons.site_url('/un')} + '/' + ${author}">主页</a>
-            <a th:if="!${public}" th:href="${state != 'index'}?${commons.site_url('/links')} + '/' + ${authorId}">友链</a>
-            <a th:if="!${public}" th:href="${commons.site_url('/about')}">关于</a>
+            <a th:if="${state == 'index' &amp;&amp; public != true}" th:href="${state == 'archives'}? '' : ${commons.site_url('/archives')} + '/' + ${authorId}" th:style="${'archives' == state}?'font-size: 25px'">归档</a>
+            <a th:if="${state == 'index' &amp;&amp; public == true}" th:href="${commons.site_url('/archives')}" th:style="${'archives' == state}?'font-size: 25px'">归档</a>
+            <a th:if="${state != 'index'}" th:href="${public}? ${commons.site_url('/')} : ${commons.site_url('/un')} + '/' + ${author}" th:style="${'index' == state}?'font-size: 25px'">主页</a>
+            <a th:if="!${public}" th:href="${commons.site_url('/links')} + '/' + ${authorId}" th:style="${'links' == state}?'font-size: 25px'">友链</a>
+            <a th:if="!${public}" th:href="${commons.site_url('/about')}" th:style="${'about' == state}?'font-size: 25px'">关于</a>
             <a th:if="${public}" th:href="${commons.site_url('/admin/login')}">登陆</a>
         </div>
         <!--添加了游客浏览状态下，登陆后台的接口-->
