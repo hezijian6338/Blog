@@ -148,7 +148,7 @@ public class IndexController extends BaseController {
             return this.render_404();
         }
 
-        UserVo user = userService.queryUserById(contents.getAuthorId());
+        UserVo user = this.getUserById(contents.getAuthorId());
 
         contents.setCommentsNum(commentService.countComment(contents.getCid()));
 //        返回获取的值给前端使用
@@ -363,7 +363,7 @@ public class IndexController extends BaseController {
     public String archives(HttpServletRequest request, @PathVariable Integer author_id) {
         List<ArchiveBo> archives = siteService.getArchives(author_id);
         if (author_id != 0) {
-            UserVo user = userService.queryUserById(author_id);
+            UserVo user = this.getUserById(author_id);
             request.setAttribute("author", user.getUsername());
         }
         this.state(request, "archives");
@@ -382,7 +382,7 @@ public class IndexController extends BaseController {
         List<MetaVo> links = metaService.getMetas(Types.LINK.getType(),author_id);
 
 //        根据当前URL地址获取到的author_id,去查询数据库获取当前的用户对象
-        UserVo user = userService.queryUserById(author_id);
+        UserVo user = this.getUserById(author_id);
 
 //        通过抽离的方式,进行对用户名称返回到前端
         this.author(request, user.getUsername());
@@ -411,7 +411,10 @@ public class IndexController extends BaseController {
             PageInfo<CommentBo> commentsPaginator = commentService.getComments(contents.getCid(), Integer.parseInt(cp), 6);
             request.setAttribute("comments", commentsPaginator);
         }
+        UserVo user = this.getUserById(contents.getAuthorId());
         request.setAttribute("article", contents);
+        this.authorId(request, contents.getAuthorId());
+        this.author(request, user.getUsername());
         if (!checkHitsFrequency(request, String.valueOf(contents.getCid()))) {
             updateArticleHit(contents.getCid(), contents.getHits());
         }

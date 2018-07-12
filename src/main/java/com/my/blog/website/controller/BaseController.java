@@ -1,15 +1,20 @@
 package com.my.blog.website.controller;
 
 import com.my.blog.website.model.Vo.UserVo;
+import com.my.blog.website.service.IUserService;
 import com.my.blog.website.utils.TaleUtils;
 import com.my.blog.website.utils.MapCache;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by 13 on 2017/2/21.
  */
 public abstract class BaseController {
+
+    @Resource
+    private IUserService userService;
 
     public static String THEME = "themes/default";
 
@@ -42,6 +47,11 @@ public abstract class BaseController {
     public BaseController authorId(HttpServletRequest request, Integer authorId) {
         request.setAttribute("authorId", authorId);
         return this;
+    }
+
+    public UserVo getUserById(Integer authorId) {
+        UserVo user = userService.queryUserById(authorId);
+        return user;
     }
 
     public BaseController keywords(HttpServletRequest request, String keywords) {
