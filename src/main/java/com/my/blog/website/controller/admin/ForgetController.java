@@ -78,6 +78,7 @@ public class ForgetController {
         try{
             String email = (String) session.getAttribute("email");
             email = email + ".com";
+//            System.out.println(email);
             UserVo userVo = userService.findPassword(idAccount,email);
             String pwd = TaleUtils.MD5encode(idAccount + password1);
             userVo.setPassword(pwd);
