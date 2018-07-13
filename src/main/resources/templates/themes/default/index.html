@@ -21,10 +21,14 @@
                         <div class="item-title"><a th:href="${commons.permalink(article)}"
                                                    th:text="${article.title}"></a>
                         </div>
+
+                        <!--控制游客浏览的时候和个人博客浏览的时候样式的不同-->
                         <div class="item-meta clearfix">
                             <small th:text="'by ' + ${article.author.username}"
                                    th:style="${public}? 'display:' : 'display:none'"></small>
                         </div>
+                        <!--end-->
+
                         <div class="item-meta clearfix" th:style="${public}? 'display:none' : 'display:'">
                             <div th:class="'item-meta-ico '+ ${commons.show_icon(article.cid)}"
                                  th:style="'background: url('+@{/user/img/bg-ico.png}+');no-repeat;background-size: 40px auto;' "></div>

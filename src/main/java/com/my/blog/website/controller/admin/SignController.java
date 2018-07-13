@@ -20,16 +20,20 @@ import javax.servlet.http.HttpSession;
 @Controller("adminSignController")
 @RequestMapping("/sign")
 public class SignController {
+//    注册新用户的Controller
+
 
     @Resource
     private IUserService userService;
 
+//    跳转初始页面
     @GetMapping(value = "")
     public String sign(HttpServletRequest request) {
         request.setAttribute("state", "sign");
         return "admin/sign";
     }
 
+//    进行修改密码的函数
     @PostMapping(value = "new")
     @ResponseBody
     public RestResponseBo newUser(HttpServletRequest request, HttpSession session, @RequestParam String username, @RequestParam String password, @RequestParam String email) {
