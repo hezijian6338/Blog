@@ -65,18 +65,18 @@ public class ForgetController {
 
     @PostMapping(value = "newPassWord")
     @ResponseBody
-    public RestResponseBo modifyPassWord(@RequestParam String idAccount,@RequestParam String password, HttpServletRequest request,HttpSession session){
-        if (password.length() < 6 || password.length() > 14) {
+    public RestResponseBo modifyPassWord(@RequestParam String idAccount,@RequestParam String password1, HttpServletRequest request,HttpSession session){
+        if (password1.length() < 6 || password1.length() > 14) {
             return RestResponseBo.fail("请输入6-14位密码");
         }
-        if(password.isEmpty() || idAccount.isEmpty()){
+        if(password1.isEmpty() || idAccount.isEmpty()){
             return RestResponseBo.fail("密码或者账户不能为空");
         }
         try{
             String email = (String) session.getAttribute("email");
             email = email + ".com";
             UserVo userVo = userService.findPassword(idAccount,email);
-            String pwd = TaleUtils.MD5encode(idAccount + password);
+            String pwd = TaleUtils.MD5encode(idAccount + password1);
             userVo.setPassword(pwd);
             userService.updateByUid(userVo);
             return RestResponseBo.ok();
