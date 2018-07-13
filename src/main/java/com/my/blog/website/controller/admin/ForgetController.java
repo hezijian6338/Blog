@@ -65,7 +65,10 @@ public class ForgetController {
 
     @PostMapping(value = "newPassWord")
     @ResponseBody
-    public RestResponseBo modifyPassWord(@RequestParam String idAccount,@RequestParam String password1, HttpServletRequest request,HttpSession session){
+    public RestResponseBo modifyPassWord(@RequestParam String idAccount,@RequestParam String password1,@RequestParam String password2,HttpServletRequest request,HttpSession session){
+        if(!(password1.equals(password2))){
+            return RestResponseBo.fail("请输入相同的密码");
+        }
         if (password1.length() < 6 || password1.length() > 14) {
             return RestResponseBo.fail("请输入6-14位密码");
         }
