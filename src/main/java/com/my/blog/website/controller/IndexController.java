@@ -35,6 +35,7 @@ import java.util.List;
  * 首页
  * Created by Administrator on 2017/3/8 008.
  */
+
 @Controller
 public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
