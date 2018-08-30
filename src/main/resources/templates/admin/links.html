@@ -23,7 +23,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <th:block th:each="link : ${links}">
+                            <th:block  th:if="${link != null}" th:each="link : ${links}">
                                 <tr th:attr="mid=${link.mid}">
                                     <td th:text="${link.name}"></td>
                                     <td><a th:href="@{${link.slug}}" target="_blank" th:text="${link.slug}"></a></td>
