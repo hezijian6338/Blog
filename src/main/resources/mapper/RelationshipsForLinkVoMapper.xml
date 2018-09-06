@@ -72,7 +72,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_relationshipsForLinks
+    from t_relationshipsforlinks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,22 +89,22 @@
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.my.blog.website.model.Vo.RelationshipForeLinkVoKey">
-    delete from t_relationshipsForLinks
+    delete from t_relationshipsforlinks
     where uid = #{uid,jdbcType=INTEGER}
     and mid = #{mid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.my.blog.website.model.Vo.RelationshipsForLinkVoExample">
-    delete from t_relationshipsForLinks
+    delete from t_relationshipsforlinks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.my.blog.website.model.Vo.RelationshipForeLinkVoKey">
-    insert into t_relationshipsForLinks (uid, mid)
+    insert into t_relationshipsforlinks (uid, mid)
     values (#{uid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.my.blog.website.model.Vo.RelationshipForeLinkVoKey">
-    insert into t_relationshipsForLinks
+    insert into t_relationshipsforlinks
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">
         uid,
@@ -129,7 +129,7 @@
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_relationshipsForLinks
+    update t_relationshipsforlinks
     <set>
       <if test="record.uid != null">
         uid = #{record.uid,jdbcType=INTEGER},
@@ -143,7 +143,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_relationshipsForLinks
+    update t_relationshipsforlinks
     set uid = #{record.uid,jdbcType=INTEGER},
     mid = #{record.mid,jdbcType=INTEGER}
     <if test="_parameter != null">
