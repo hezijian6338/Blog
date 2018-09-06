@@ -123,7 +123,7 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.my.blog.website.model.Vo.RelationshipsForLinkVoExample" resultType="java.lang.Long">
-    select count(*) from t_relationshipsForLinks
+    select count(1) from t_relationshipsforlinks
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
