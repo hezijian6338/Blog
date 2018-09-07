@@ -170,7 +170,7 @@ public final class Commons {
     public static String random(int max, String str) {
         return UUID.random(1, max) + str;
     }
-    
+    .
     /**
      * 返回文章链接地址
      *
