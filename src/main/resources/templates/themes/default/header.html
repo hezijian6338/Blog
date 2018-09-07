@@ -69,7 +69,7 @@
                 <li><a th:if="${state == 'index' &amp;&amp; public == true}" th:href="${commons.site_url('/archives')}" th:style="${'archives' == state}?'font-size: 25px'">归档</a></li>
                 <li><a th:if="${state != 'index'}" th:href="${public}? ${commons.site_url('/')} : ${commons.site_url('/un')} + '/' + ${author}" th:style="${'index' == state}?'font-size: 25px'">主页</a></li>
                 <li><a th:if="!${public}" th:href="${commons.site_url('/links')} + '/' + ${authorId}" th:style="${'links' == state}?'font-size: 25px'">友链</a></li>
-                <li><a th:if="${public}" th:href="${commons.site_url('/admin/login')}">登陆</a>
+                <li><a th:if="${public}" th:href="${commons.site_url('/admin/login')}">登陆</a></li>
             </ul>
         </div>
         <!--end-->
