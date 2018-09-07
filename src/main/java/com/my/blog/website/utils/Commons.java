@@ -170,18 +170,7 @@ public final class Commons {
     public static String random(int max, String str) {
         return UUID.random(1, max) + str;
     }
-
-    /**
-     * 获取版本号随机数
-     *
-     * @param max
-     * @param str
-     * @return
-     */
-    public static String random(int max) {
-        return "v=" + UUID.random(1, max) + "." + UUID.random(1, max);
-    }
-
+    
     /**
      * 返回文章链接地址
      *
