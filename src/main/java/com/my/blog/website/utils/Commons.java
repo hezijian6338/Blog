@@ -134,7 +134,7 @@ public final class Commons {
     public static String gravatar(String email) {
         String avatarUrl = "https://github.com/identicons/";
         if (StringUtils.isBlank(email)) {
-            email = "user@hanshuai.xin";
+            email = "627222344@qq.com";
         }
         String hash = TaleUtils.MD5encode(email.trim().toLowerCase());
         return avatarUrl + hash + ".png";
@@ -169,6 +169,17 @@ public final class Commons {
      */
     public static String random(int max, String str) {
         return UUID.random(1, max) + str;
+    }
+
+    /**
+     * 获取版本号随机数
+     *
+     * @param max
+     * @param str
+     * @return
+     */
+    public static String random(int max) {
+        return "v=" + UUID.random(1, max) + "." + UUID.random(1, max);
     }
 
     /**
