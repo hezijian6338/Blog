@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="shortcut icon" th:href="@{/admin/images/favicon.png}" />
     <title>My Blog - 用户登录</title>
+</head>
+
+<body th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
     <link th:href="@{/admin/css/style.min.css}" rel="stylesheet" type="text/css" />
     <!-- <link th:href="@{//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet" /> -->
     <link th:href="@{/admin/css/font-awesome.min.css}" rel="stylesheet" />
@@ -52,10 +55,6 @@
             color: #cac9c8;
         }
     </style>
-
-</head>
-
-<body th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
     <div style="margin: 0 auto; padding-bottom: 0%; padding-top: 7.5%; width: 380px;">
         <div class="panel panel-color panel-danger panel-pages panel-shadow">
             <div class="panel-heading bg-img">
