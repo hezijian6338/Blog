@@ -3701,6 +3701,10 @@ body.fixed-left .side-menu.left {
     background: url(../images/small/bg.jpg) center
 }
 
+.bg-img-sign {
+    background: url(../images/small/bg2.jpg) center
+}
+
 .bg-overlay {
     -moz-border-radius: 6px 6px 0 0;
     -webkit-border-radius: 6px 6px 0 0;
