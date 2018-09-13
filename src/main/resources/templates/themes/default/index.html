@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="themes/default/header::header(null,null)"></div>
-<body>
+<head>
     <style type="text/css">
         .mask {
             position: absolute;
@@ -14,6 +13,9 @@
             -moz-opacity: 0.5;
         }
     </style>
+</head>
+<div th:replace="themes/default/header::header(null,null)"></div>
+<body>
     <div id="mask" class="mask" th:style="'background:url(/user/img/loading.gif)'"></div>
     <div class="main-content index-page clearfix">
         <div class="post-lists">
@@ -54,15 +56,16 @@
         </div>
     </div>
     <script type="text/javascript">
-        function showMask(){     
-            $("#mask").css("height",$(document).height());     
-            $("#mask").css("width",$(document).width());     
-            $("#mask").show();     
+        function showMask() {
+            $("#mask").css("height", $(document).height());
+            $("#mask").css("width", $(document).width());
+            $("#mask").show();
         }
-        setTimeout(function(){
-            $("#mask").hide(); 
-        },5000)
+        setTimeout(function () {
+            $("#mask").hide();
+        }, 5000)
     </script>
 </body>
 <div th:replace="themes/default/footer::footer"></div>
+
 </html>
