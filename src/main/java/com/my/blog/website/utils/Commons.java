@@ -283,10 +283,10 @@ public final class Commons {
      * @return
      */
     public static String show_thumb(ContentVo contents) {
-        String img = show_thumb(contents.getContent());
-        if(img != null){
-            return img;
-        }
+        // String img = show_thumb(contents.getContent());
+        // if(img != null){
+        //     return img;
+        // }
         int cid = contents.getCid();
         int size = cid % 20;
         size = size == 0 ? 1 : size;
