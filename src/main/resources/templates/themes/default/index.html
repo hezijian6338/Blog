@@ -15,7 +15,7 @@
     </style>
 </head>
 <div th:replace="themes/default/header::header(null,null)"></div>
-<body>
+<body onload="showMask()">
     <div id="mask" class="mask" th:style="'background:url(/user/img/loading.gif)'"></div>
     <div class="main-content index-page clearfix">
         <div class="post-lists">
