@@ -1617,13 +1617,21 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
     animation-name: slideDown
 }
 
+@media (max-width: 1629px) {
+    .main-content {
+        max-width: 940px;
+    }
+
+    .post-list-item {
+        width: 33.333%;
+        padding: 10px
+    }
+    
+}
+
 @media (max-width: 1059px) {
     .directory-content {
         display: none
-    }
-    .post-list-item {
-        width: 33.333%;
-        padding: 15px
     }
 }
 
