@@ -70,11 +70,12 @@
         $("#mask").css("height", $(document).height());
         $("#mask").css("width", $(document).width());
         $("#mask").fadeIn(200);
-        $("#main").fadeOut(200);
+//        $("#main").fadeOut(200);
     }
     setTimeout(function () {
-        $("#mask").fadeOut(200);
         $("#main").fadeIn(200);
+        $("#mask").fadeOut(200);
+
     }, 500)
 </script>
 </body>
