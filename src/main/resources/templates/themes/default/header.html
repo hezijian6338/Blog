@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" th:href="@{/user/img/apple-touch-icon.png}"/>
     <title><th:block th:text="${title ?: '首页'}+' - '+${commons.site_option('site_title','My Blog')}"></th:block></title>
     <link th:href="@{//cdn.bootcss.com/highlight.js/9.9.0/styles/xcode.min.css}" rel="stylesheet"/>
-    <link th:href="@{/user/css/style.min.css?v1.2}" rel="stylesheet"/>
+    <link th:href="@{/user/css/style.min.css?v=1.2}" rel="stylesheet"/>
     <script th:src="@{//cdn.bootcss.com/jquery/2.2.3/jquery.min.js}"></script>
 
     <!--[if lt IE 9]>
@@ -65,9 +65,11 @@
         <div class="navbar-mobile-menu" onclick="">
             <span class="icon-menu cross"><span class="middle"></span></span>
             <ul>
-                <li><a th:href="${commons.site_url('/archives')}">归档</a></li>
-                <li><a th:href="${commons.site_url('/links')}">友链</a></li>
-                <li><a th:href="${commons.site_url('/about')}">关于</a></li>
+                <li><a th:if="${state == 'index' &amp;&amp; public != true}" th:href="${state == 'archives'}? '' : ${commons.site_url('/archives')} + '/' + ${authorId}" th:style="${'archives' == state}?'font-size: 25px'">归档</a></li>
+                <li><a th:if="${state == 'index' &amp;&amp; public == true}" th:href="${commons.site_url('/archives')}" th:style="${'archives' == state}?'font-size: 25px'">归档</a></li>
+                <li><a th:if="${state != 'index'}" th:href="${public}? ${commons.site_url('/')} : ${commons.site_url('/un')} + '/' + ${author}" th:style="${'index' == state}?'font-size: 25px'">主页</a></li>
+                <li><a th:if="!${public}" th:href="${commons.site_url('/links')} + '/' + ${authorId}" th:style="${'links' == state}?'font-size: 25px'">友链</a></li>
+                <li><a th:if="${public}" th:href="${commons.site_url('/admin/login')}">登陆</a></li>
             </ul>
         </div>
         <!--end-->

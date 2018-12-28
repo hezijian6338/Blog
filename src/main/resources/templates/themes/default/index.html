@@ -1,8 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style type="text/css">
+        .mask {
+            position: absolute;
+            /*top: 0px;*/
+            filter: alpha(opacity=60);
+            /*background-color: #777;*/
+            z-index: 99;
+            /*left: 0px;*/
+            opacity: 0.5;
+            -moz-opacity: 0.5;
+            /*width: 100%;*/
+            /*height: 100%;*/
+            display: none;
+        }
+    </style>
+</head>
 <div th:replace="themes/default/header::header(null,null)"></div>
-<body>
-<div class="main-content index-page clearfix">
+<body onload="showMask()">
+<div id="mask" class="mask"
+     th:style="'background:url(/user/img/loading.gif) no-repeat center center;'">
+    <!--<div th:style="'background:url(/user/img/loading.gif) no-repeat;background-position:top center;z-index:1000;'"></div>-->
+</div>
+<div class="main-content index-page clearfix" id="main" style="display: none">
     <div class="post-lists">
         <div class="post-lists-body">
 
@@ -44,6 +65,20 @@
         <div th:replace="comm/macros::pageNav(${articles},'←','→','page')"></div>
     </div>
 </div>
+<script type="text/javascript">
+    function showMask() {
+        $("#mask").css("height", $(document).height());
+        $("#mask").css("width", $(document).width());
+        $("#mask").fadeIn(200);
+//        $("#main").fadeOut(200);
+    }
+    setTimeout(function () {
+        $("#main").fadeIn(200);
+        $("#mask").fadeOut(200);
+
+    }, 500)
+</script>
 </body>
 <div th:replace="themes/default/footer::footer"></div>
+
 </html>
