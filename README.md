@@ -12,7 +12,7 @@ My Blog是由Docker+SpringBoot+Mybatis+thymeleaf等技术实现的Java博客系�
 - **部署后你可以根据自己需求修改版权文案、logo图片、备案记录等信息；**
 - **My Blog还有许多不完善的地方，鄙人才疏学浅，望见谅！**
 
-演示站点：http://13blog.site
+演示站点：https://blog.dragonsking.cn
 
 [![Build Status](https://travis-ci.org/ZHENFENG13/My-Blog.svg?branch=master)](https://travis-ci.org/ZHENFENG13/My-Blog)
 ![Version 3.2.0](https://img.shields.io/badge/version-3.2.0-yellow.svg)
